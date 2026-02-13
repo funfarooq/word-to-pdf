@@ -3,26 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <title>Word to PDF Converter</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
+            margin: 0;
             background: #f4f6f8;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: #007bff;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        /* Main container */
+        .container {
+            flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
         }
+
         .box {
             background: #ffffff;
             padding: 30px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            width: 350px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            width: 400px;
             text-align: center;
         }
-        input[type="file"] {
-            margin: 15px 0;
+
+        /* Drag Area */
+        .drop-area {
+            border: 2px dashed #007bff;
+            border-radius: 8px;
+            padding: 30px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            transition: 0.3s;
         }
+
+        .drop-area:hover {
+            background: #e9f2ff;
+        }
+
+        .drop-area p {
+            margin: 0;
+            color: #555;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
         button {
             background: #007bff;
             color: white;
@@ -30,23 +71,70 @@
             padding: 10px 20px;
             cursor: pointer;
             border-radius: 4px;
+            margin-top: 10px;
         }
+
         button:hover {
             background: #0056b3;
+        }
+
+        /* Footer */
+        footer {
+            background: #222;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
 
-<div class="box">
-    <h2>Word to PDF Converter</h2>
+<header>
+    Word to PDF Converter
+</header>
 
-    <form action="/convert" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" accept=".doc,.docx" required>
-        <br>
-        <button type="submit">Convert to PDF</button>
-    </form>
+<div class="container">
+    <div class="box">
+        <h3>Upload Your Word File</h3>
+
+        <form action="/convert" method="post" enctype="multipart/form-data">
+            
+            <label class="drop-area" id="drop-area">
+                <p>Drag & Drop your .docx file here<br>or Click to Browse</p>
+                <input type="file" name="file" id="fileInput" accept=".docx" required>
+            </label>
+
+            <button type="submit">Convert to PDF</button>
+        </form>
+    </div>
 </div>
+
+<footer>
+    © 2026 Farooq Shaik | Flask Word to PDF Converter
+</footer>
+
+<script>
+    const dropArea = document.getElementById("drop-area");
+    const fileInput = document.getElementById("fileInput");
+
+    dropArea.addEventListener("click", () => fileInput.click());
+
+    dropArea.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropArea.style.background = "#e9f2ff";
+    });
+
+    dropArea.addEventListener("dragleave", () => {
+        dropArea.style.background = "white";
+    });
+
+    dropArea.addEventListener("drop", (e) => {
+        e.preventDefault();
+        fileInput.files = e.dataTransfer.files;
+        dropArea.style.background = "white";
+    });
+</script>
 
 </body>
 </html>
